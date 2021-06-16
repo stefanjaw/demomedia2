@@ -1,0 +1,118 @@
+<odoo>
+    <data>
+      
+        <record model="ir.ui.view" id="l10n_us_check_printing_micr.list">
+            <field name="name">Account Journal MICR Enable</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="model">account.journal</field>
+            <field name="priority">98</field>
+            <!-- <field name="name">account.view_account_journal_form_micr</field> -->
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='outbound_payment_method_ids']" position="after">
+                    <field name="micr_enable"
+                        string="MICR Enable"
+                        attrs="{'invisible': [('check_printing_payment_method_selected', '=', False)]}" />
+                    <field name="check_sequence_size" string="Check Number Digits"
+                        attrs="{'invisible': ['|', ( 'check_manual_sequencing', '=', False ), ( 'check_printing_payment_method_selected', '!=', True )]}"
+                        help="Quantity of digits for the check sequence"
+                    />
+
+                </xpath>
+                
+                <xpath expr="//notebook" position="inside">
+                    <page string="MICR Configuration"
+                          name="micr_configuration"
+                          attrs="{'invisible': [('micr_enable', '=', False)]}"
+                          groups="base.group_system"
+                    >
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                                <field name="company_registry"/>
+                                <field name="company_name"/>
+                                <!-- <field name="po_box" string="P.O. Box"/> -->
+                                <field name="company_po_box" string="P.O. Box"/>
+                                <span class="o_form_label o_td_label">Company Address</span>
+                                <span>
+                                    <field name="company_city"
+                                        attrs="{'invisible': [('company_city', '=', False)]}"
+                                    />
+                                    <span attrs="{'invisible': [('company_state_code', '=', False)]}"
+                                    >,&amp;nbsp;</span>
+                                    <field name="company_state_code" 
+                                        attrs="{'invisible': [('company_state_code', '=', False)]}"
+                                    />
+                                    <span attrs="{'invisible': [('company_zip', '=', False)]}"
+                                    >&amp;nbsp;</span>
+                                    <field name="company_zip"
+                                        attrs="{'invisible': [('company_zip', '=', False)]}"
+                                    />
+                                </span>
+                                <!-- <field name="hash_code"/> -->
+                                <style>
+                                   @font-face {
+                                      font-family: 'e13b';
+                                      src: local('e13b'), local('e13b'), url(/l10n_us_check_printing_micr/static/src/fonts/MICR.ttf) format('truetype');
+                                   }
+                                   .micr_format {
+                                      font-family: 'e13b';
+                                   }
+                                </style>
+
+                                <field name="micr_f1" class="micr_format" string="Symbol 1"/>
+                                <field name="micr_f2" class="micr_format" string="Symbol 2"/>
+                                <field name="micr_f3" class="micr_format" string="Symbol 3"/>
+                                <field name="micr_f4" class="micr_format" string="Symbol 4"/>
+                                <field name="micr_f5" class="micr_format" string="Symbol 5"/>
+                            </group>
+                            <group>
+                                <field name="bank_account_id"/>
+                                <field name="bank_id" readonly="True"/>
+                                <field name="bank_name" string="Bank Name"/>
+                                <span class="o_form_label o_td_label">Bank Address</span>
+                                <span>
+                                    <field name="bank_city"
+                                        attrs="{'invisible': [('bank_city', '=', False)]}"
+                                    />
+                                    <span attrs="{'invisible': [('bank_state_code', '=', False)]}"
+                                    >,&amp;nbsp;</span>
+                                    <field name="bank_state_code" 
+                                        attrs="{'invisible': [('bank_state_code', '=', False)]}"
+                                    />
+                                    <span attrs="{'invisible': [('bank_zip', '=', False)]}"
+                                    >&amp;nbsp;</span>
+                                    <field name="bank_zip"
+                                        attrs="{'invisible': [('bank_zip', '=', False)]}"
+                                    />
+                                </span>
+                                <field name="bank_account_aba_routing" string="Bank Account ABA Routing"/>
+                                <field name="bank_account_number" string="Bank Account Number"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+                
+                <!-- <p>XXXXXX</p> -->
+
+                
+            </field>
+        </record>
+<!--
+    <record model="ir.ui.view" id="l10n_us_check_printing_micr.list">
+      <field name="name">l10n_us_check_printing_micr list</field>
+      <field name="model">l10n_us_check_printing_micr.l10n_us_check_printing_micr</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+
+  </data>
+</odoo>

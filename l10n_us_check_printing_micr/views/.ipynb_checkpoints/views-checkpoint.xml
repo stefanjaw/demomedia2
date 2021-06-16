@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+<!--        
+        <record model="ir.ui.view" id="l10n_us_check_printing_micr.list">
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="name">account.view_account_journal_form_micr</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='outbound_payment_method_ids']" position="after">
+                    <field name="micr_enable" attrs="{'invisible': [('check_printing_payment_method_selected', '=', False)]}" />
+
+                </xpath>
+                <p>XXXXXX</p>
+
+                
+            </field>
+        </record>
+
+-->        
+  </data>
+</odoo>

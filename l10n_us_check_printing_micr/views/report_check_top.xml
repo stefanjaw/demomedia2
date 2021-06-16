@@ -1,0 +1,120 @@
+<odoo>
+    
+<template id="l10n_us_check_printing_micr.print_check_top_micr">
+        <div style="margin-left:4pt;">
+            <div class="row mt-5">
+            </div>
+            <div class="row mt-5">
+            </div>
+            <div class="row mt-5  check_line1" style="margin-left: 40pt;">
+                <div class="col-4" >
+                    <b><span t-esc="o.journal_id.company_registry"/></b><br/>
+                    <span t-esc="o.journal_id.company_name" style="font-size:10px;"/><br/>
+                    <span t-if="o.journal_id.company_po_box"  style="font-size:10px;">
+                        P.O. Box <span t-esc="o.journal_id.company_po_box" />
+                    </span><br/>
+                    <span style="font-size:10px;">
+                        <span t-esc="o.journal_id.company_city"  
+                        />,&amp;nbsp;<span t-esc="o.journal_id.company_state_code"
+                        />&amp;nbsp;<span t-esc="o.journal_id.company_zip"/>
+                    </span><br/>
+                    
+                </div>
+                <div class="col-4">
+                    <span t-esc="o.journal_id.bank_name"/><br/>
+                    <span style="font-size:10px;">
+                        <span t-esc="o.journal_id.bank_city"
+                        />,&amp;nbsp;<span t-esc="o.journal_id.bank_state_code"
+                        />&amp;nbsp;<span t-esc="o.journal_id.bank_zip"/>
+                    </span><br/>
+
+                </div>
+                <div class="col-4 text-right" style="font-size:20px;">
+                    <b><span t-esc="o.check_number"/></b>
+                </div>
+                
+            </div>
+            <div class="row mt-1 check_line2">
+                <div class="col-8 mt-1">
+                    <br/>
+                </div>    
+                <div class="col-2 mt-1 text-center">
+                    <strong>DATE</strong>
+                    <br/>
+                    <!-- ><strong>DATE</strong></div> -->
+                    <div class="mt-1" t-esc="page['date']" />
+                </div>
+                <div class="col-2 mt-1 text-center">
+                    <div class="mt-1"><strong>AMOUNT</strong></div>
+                    <span t-esc="page['amount']"/>
+                </div>
+            </div>
+            <div class="row mt-1 check_line3">
+                <div class="col-1 mt-1">
+                    <strong>PAY </strong>
+                </div>
+                <div class="col-8 mt-1" >
+                    <span t-esc="page['amount_in_word'].replace('*','')"/>
+                </div>
+            </div>
+
+            <div class="row mt-5 check_line4" >
+                <div class="col-1 mt-1 " style="font-size: 10px;">
+                    <strong>TO THE ORDER OF</strong>
+                </div>
+                <div class="col-6 mt-1" >
+                    <span t-esc="o.partner_id.name"/><br/>
+                    <span>
+                        <span t-esc="o.partner_id.street"
+                        />,&amp;nbsp;<span t-esc="o.partner_id.street2"/>
+                    </span><br/>
+                    <span>
+                        <span t-esc="o.partner_id.city"
+                        />,&amp;nbsp;<span t-esc="o.partner_id.state_id.code"
+                        />&amp;nbsp;<span t-esc="o.partner_id.zip"/>
+                    </span>
+                </div>
+                <div class="col-6 mt-5" >
+                        <div style="border-bottom: 1px solid black;width:165px;"/>
+                        <div>&amp;nbsp;AUTHORIZED SIGNATURE&amp;nbsp;</div>
+                    <!-- <span>AUTHORIZED SIGNATURE</span> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-2">
+                <style>
+                    @font-face {
+                        font-family: 'e13b';
+                        src: local('e13b'), local('e13b'), url(/l10n_us_check_printing_micr/static/src/fonts/MICR.ttf) format('truetype');
+                    }
+                    .micr_format {
+                        font-family: 'e13b';
+                    }
+                </style>
+                <center>
+                    <p class="micr_format" t-esc="'C'+o.check_number+'C '+'A'+str(o.journal_id.bank_account_aba_routing)+'A '+str(o.journal_id.bank_account_number)+'C'"/>
+                </center>
+            </div>
+        </div>
+</template>
+
+
+<template id="report_print_check_inherit" inherit_id="l10n_us_check_printing.print_check_top">
+    <xpath expr="//t[@t-call='l10n_us_check_printing.ckus_check']" position="replace">
+        <t t-call="l10n_us_check_printing_micr.print_check_top_micr"/>
+    </xpath>
+</template>
+
+</odoo>
+
+                    <!--
+                    <span t-esc="o.journal_id.bank_bic"/><br/>
+                    <span t-esc="o.journal_id.bank_street"/><br/>
+                    <span t-esc="o.journal_id.bank_street2"/><br/>
+                    <span t-esc="o.journal_id.bank_city"/><br/>
+                    <span t-esc="o.journal_id.bank_state_code"/><br/>
+                    <span t-esc="o.journal_id.bank_zip"/><br/>
+                    <span t-esc="o.journal_id.bank_account_aba_routing"/><br/>
+                    <span t-esc="o.journal_id.bank_account_number"/>
+                    -->

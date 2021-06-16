@@ -1,0 +1,139 @@
+<odoo>
+    <template id="l10n_us_check_printing_micr.ckus_stub_micr">
+        <div t-attf-class="ckus_stub ckus_stub_{{ stub_num }}"
+             style="margin-top:0;">
+            <div class="row summary_line" style="margin-left: 4pt;">
+                <div class="col text-left" t-esc="o.company_id.company_registry"
+                     style="width: 30%; "/>
+                <div class="col text-left" style="width: 55%;">
+                    <span>Bill Reference: </span>
+                    <span t-esc="o.ref"/>
+                </div>
+                
+                <div class="col text-right" style="width: 15%;">
+                    <h5><span t-esc="o.check_number"/></h5>
+                </div>
+            </div>
+            
+            <div class="row summary_line" style="margin-left: 4pt;">
+                <div t-esc="o.date" class="col-2 text-left"/>
+                <div t-esc="o.partner_id.name" class="col-6 text-left" style="width: auto;" />
+            </div>
+
+            <table class="table table-bordered table-sm stub_lines" t-if="page['stub_lines']">
+                <thead><tr>
+                    <th class="text-left">Due Date</th>
+                    <th class="text-left">Description</th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-right">Balance Due</th>
+                    <th class="text-right">Payment</th>
+                </tr></thead>
+                <tbody>
+                    <t t-foreach="page['stub_lines']" t-as="stub_line">
+                        <t t-if="stub_line.get('header')">
+                            <tr><th colspan="6"><t t-esc="stub_line['name']"/></th></tr>
+                        </t>
+                        <t t-if="not stub_line.get('header')"><tr>
+                            <td class="text-left"><t t-if="stub_line['due_date']" t-esc="stub_line['due_date']"/></td>
+                            <td class="text-left text-truncate" style="max-width: 500px;"><t t-esc="stub_line['number']"/></td>
+                            <td class="text-right"><t t-esc="stub_line['amount_total']"/></td>
+                            <td class="text-right">
+                                <t t-esc="stub_line['amount_residual']"/>
+                            </td>
+                            <td class="text-right"><t t-esc="stub_line['amount_paid']"/></td>
+                        </tr></t>
+                    </t>
+                    <tr t-if="page['stub_cropped']"><td colspan="6" class="text-right">...</td></tr>
+                </tbody>
+            </table>
+            <div class="stub_total_amount">Check Amount:
+                <span class="text-nowrap"><t t-esc="page['amount']"/></span>
+            </div>
+
+        </div>
+    </template>    
+    
+    
+    <template id="print_check_top_inherit" inherit_id="l10n_us_check_printing.print_check_top">
+        <xpath expr="//t[@t-call='l10n_us_check_printing.ckus_stub'][1]" position="replace">
+            <t t-call="l10n_us_check_printing_micr.ckus_stub_micr">
+                <t t-set="stub_num" t-value="1"/>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-call='l10n_us_check_printing.ckus_stub'][1]" position="replace">
+            <t t-call="l10n_us_check_printing_micr.ckus_stub_micr">
+                <t t-set="stub_num" t-value="2"/>
+            </t>
+        </xpath>        
+    </template>
+    
+</odoo>
+
+<!-- DATA REFERENCIA
+<t t-call="l10n_us_check_printing.ckus_stub">
+
+<?xml version="1.0"?>
+<t t-name="l10n_us_check_printing.ckus_stub">
+    <div t-attf-class="ckus_stub ckus_stub_{{ stub_num }}">
+        <div class="row summary_line">
+            <div class="col-xs-4 text-left">
+                <span t-esc="page['partner_name']"/>
+                <p>XXXXStartckus_stub</p>
+                <div t-esc="o.x_micr"/>
+                <div t-if="o.x_micr">
+                  <p>MICR YES Checked</p>
+                  <div t-esc="o.journal_id.name"/>
+                </div>
+                <div t-if="not o.x_micr">
+                  <p>MICR NOT Checked</p>
+                </div>
+                <p>XXXXEND</p>
+            </div>
+            <div class="col-xs-4 text-middle">
+                <span t-esc="page['date']"/>
+            </div>
+            <div class="col-xs-4 text-right sequence_number">
+                <span t-if="page['sequence_number']" t-esc="page['sequence_number']"/>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-sm stub_lines" t-if="page['stub_lines']">
+            <thead><tr>
+                <th class="text-left">Due Date</th>
+                <th class="text-left">Description</th>
+                <th class="text-right">Invoice Amount</th>
+                <th class="text-right">Balance Due</th>
+                <th class="text-right">Payment</th>
+            </tr></thead>
+            <tbody>
+                <t t-foreach="page['stub_lines']" t-as="stub_line">
+                    <t t-if="stub_line.get('header')">
+                        <tr><th colspan="6"><t t-esc="stub_line['name']"/></th></tr>
+                    </t>
+                    <t t-if="not stub_line.get('header')"><tr>
+                        <td class="text-left"><t t-if="stub_line['due_date']" t-esc="stub_line['due_date']"/></td>
+                        <td class="text-left text-truncate" style="max-width: 500px;"><t t-esc="stub_line['number']"/></td>
+                        <td class="text-right"><t t-esc="stub_line['amount_total']"/></td>
+                        <td class="text-right">
+                            <t t-esc="stub_line['amount_residual']"/>
+                        </td>
+                        <td class="text-right"><t t-esc="stub_line['amount_paid']"/></td>
+                    </tr></t>
+                </t>
+                <tr t-if="page['stub_cropped']"><td colspan="6" class="text-right">...</td></tr>
+            </tbody>
+        </table>
+        <div class="stub_total_amount">Check AmountXXXX:
+            <span class="text-nowrap"><t t-esc="page['amount']"/></span>
+        </div>
+        <div>
+          <p>XXXXXXXXX49</p>
+        </div>
+    </div>
+</t>
+
+
+
+
+
+-->
